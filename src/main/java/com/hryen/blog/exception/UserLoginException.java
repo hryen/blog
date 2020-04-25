@@ -1,6 +1,6 @@
 package com.hryen.blog.exception;
 
-public final class UserLoginException extends BlogException {
+public class UserLoginException extends RuntimeException {
 
     private static final long serialVersionUID = -7108397220068505825L;
 

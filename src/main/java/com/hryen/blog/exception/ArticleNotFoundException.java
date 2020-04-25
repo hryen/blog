@@ -1,6 +1,6 @@
 package com.hryen.blog.exception;
 
-public final class ArticleNotFoundException extends BlogException {
+public class ArticleNotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = -5769884614873063588L;
 
