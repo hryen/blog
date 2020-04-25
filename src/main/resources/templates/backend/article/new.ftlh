@@ -7,24 +7,6 @@
 <#--app-->
 <@app>
     <main>
-<#--        <div class="ui form">-->
-<#--            <div class="field">-->
-<#--                <label>Title</label>-->
-<#--                <input type="text" v-model.trim="article.title" autofocus>-->
-<#--            </div>-->
-
-<#--            <div class="field">-->
-<#--                <label>Permalink</label>-->
-<#--                <input type="text" v-model.trim="article.permalink">-->
-<#--            </div>-->
-
-<#--            <div class="field">-->
-<#--                <label>Markdown</label>-->
-<#--                <textarea rows="30" v-model.trim="article.markdownContent"></textarea>-->
-<#--            </div>-->
-
-<#--            <button class="ui primary button" @click="handleSaveArticle">Save</button>-->
-<#--        </div>-->
         <form>
             <div class="form-group">
                 <label for="Title">Title</label>
