@@ -3,7 +3,7 @@
 <#macro app>
     <body>
         <div id="app">
-            <#include "left-sider.ftlh">
+<#--            <#include "left-sider.ftlh">-->
             <#nested>
         </div>
         </#macro>
