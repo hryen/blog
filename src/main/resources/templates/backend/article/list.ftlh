@@ -2,12 +2,29 @@
 
 <#--header-->
 <@header title="Articles - " + blogTitle>
+    <style>
+        #breadcrumb {
+            padding-bottom: 1rem;
+        }
+        #pagination {
+            padding-top: 1rem;
+        }
+    </style>
 </@header>
 
 <#--app-->
 <@app>
 <section class="section">
-    <div class="container">
+    <div id="breadcrumb" class="container">
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+                <li><a>Home</a></li>
+                <li><a>Article</a></li>
+                <li class="is-active"><a aria-current="page">List</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div id="table" class="container">
         <table class="table is-fullwidth is-hoverable">
             <thead>
             <tr>
@@ -20,6 +37,7 @@
             </tr>
             </thead>
             <tbody>
+            <template v-if="articleList.length">
                 <tr v-for="(article, index) in articleList">
                     <th>{{ index + 1 }}</th>
                     <td>{{ article.title }}</td>
@@ -27,127 +45,86 @@
                     <td>{{ article.published }}</td>
                     <td>{{ article.modified }}</td>
                     <td>
-                        <a title="view" @click="handleViewArticle(article.permalink)">View</a>
+                        <a title="View" @click="handleViewArticle(article.permalink)">View</a>
                         <a title="Edit" @click="handleEditArticle(article.id)">Edit</a>
                         <a title="Delete" @click="handleDeleteArticle(article.id)">Delete</a>
                     </td>
                 </tr>
+            </template>
+            <template v-else>
+                <tr>
+                    <td colspan="6" class="has-text-centered">
+                        No articles have been published yet.
+                    </td>
+                </tr>
+            </template>
             </tbody>
         </table>
     </div>
+
+    <#--分页-->
+    <template v-if="totalPage > 1">
+        <div id="pagination" class="container">
+            <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+
+                <#--上一页-->
+                <a @click="handleChangePage(page-1)"
+                   :disabled="page == 1"
+                   class="pagination-previous">Previous</a>
+
+                <#--下一页-->
+                <a @click="handleChangePage(page+1)"
+                   :disabled="page == totalPage"
+                   class="pagination-next">Next</a>
+
+                <ul class="pagination-list">
+                    <#--第一页-->
+                    <li v-if="page > 2">
+                        <a class="pagination-link" @click="handleChangePage(1)">1</a>
+                    </li>
+
+                    <#--如果当前页和第一页中间还有2个以上的页码-->
+                    <li v-if="page - 1 > 2">
+                        <span class="pagination-ellipsis">&hellip;</span>
+                    </li>
+
+                    <#--前一页-->
+                    <li v-if="page > 1">
+                        <a class="pagination-link" @click="handleChangePage(page-1)">
+                            {{ page - 1 }}
+                        </a>
+                    </li>
+
+                    <#--当前页-->
+                    <li>
+                        <a class="pagination-link is-current">
+                            {{ page }}
+                        </a>
+                    </li>
+
+                    <#--后一页-->
+                    <li v-if="page < totalPage">
+                        <a class="pagination-link" @click="handleChangePage(page+1)">
+                            {{ page + 1 }}
+                        </a>
+                    </li>
+
+                    <#--如果当前页和最后一页中间还有2个以上的页码-->
+                    <li v-if="totalPage - page > 2">
+                        <span class="pagination-ellipsis">&hellip;</span>
+                    </li>
+
+                    <#--最后一页-->
+                    <li v-if="totalPage - page > 1">
+                        <a class="pagination-link" @click="handleChangePage(totalPage)">
+                            {{ totalPage }}
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </template>
 </section>
-
-
-
-<#--    <main>-->
-<#--        <div :class="{ active : isLoad }" class="ui centered loader"></div>-->
-<#--        <template v-if="articleList.length">-->
-<#--            <table class="ui table fixed single line unstackable selectable">-->
-<#--                <thead>-->
-<#--                <tr>-->
-<#--                    <th class="one wide">#</th>-->
-<#--                    <th class="five wide">Title</th>-->
-<#--                    <th class="four wide">Permalink</th>-->
-<#--                    <th class="two wide">Published</th>-->
-<#--                    <th class="two wide">Modified</th>-->
-<#--                    <th class="two wide">Action</th>-->
-<#--                </tr>-->
-<#--                </thead>-->
-<#--                <tbody>-->
-<#--                <tr v-for="(article, index) in articleList">-->
-<#--                    <td>{{ index + 1 }}</td>-->
-<#--                    <td>{{ article.title }}</td>-->
-<#--                    <td>{{ article.permalink }}</td>-->
-<#--                    <td>{{ article.published }}</td>-->
-<#--                    <td>{{ article.modified }}</td>-->
-<#--                    <td>-->
-<#--                        <button class="ui button icon"-->
-<#--                                @click="handleViewArticle(article.permalink)">-->
-<#--                            <i class="icon eye"></i>-->
-<#--                        </button>-->
-
-<#--                        <button class="ui button icon"-->
-<#--                                @click="handleEditArticle(article.id)">-->
-<#--                            <i class="icon edit"></i>-->
-<#--                        </button>-->
-
-<#--                        <button class="negative ui button icon"-->
-<#--                                @click="handleDeleteArticle(article.id)">-->
-<#--                            <i class="icon trash"></i>-->
-<#--                        </button>-->
-<#--                    </td>-->
-<#--                </tr>-->
-<#--                </tbody>-->
-<#--            </table>-->
-
-<#--            <span style="font-size: 16px;">Limit:</span>-->
-<#--            <label>-->
-<#--                <select v-model="limit" @change="handleListArticle" style="width: 50px;display: inline">-->
-<#--                    <option value="10">10</option>-->
-<#--                    <option value="20">20</option>-->
-<#--                    <option value="30">30</option>-->
-<#--                    <option value="50">50</option>-->
-<#--                    <option value="100">100</option>-->
-<#--                </select>-->
-<#--            </label>-->
-<#--            <span style="margin-left: 10px;font-size: 16px;">Total {{ totalCount }} items.</span>-->
-
-<#--            &lt;#&ndash;分页&ndash;&gt;-->
-<#--            <template v-if="totalPage > 1">-->
-<#--                <div class="ui pagination menu right floated">-->
-
-<#--                    &lt;#&ndash;上一页&ndash;&gt;-->
-<#--                    <a v-if="page > 1" class="icon item" @click="handleChangePage(page-1)">-->
-<#--                        <i class="left chevron icon"></i>-->
-<#--                    </a>-->
-
-<#--                    &lt;#&ndash;总页数小于10 显示全部页码&ndash;&gt;-->
-<#--                    <template v-if="totalPage < 10">-->
-<#--                        <template v-for="n in totalPage">-->
-<#--                            <a-->
-<#--                                    v-if="n == page"-->
-<#--                                    class="item active"-->
-<#--                                    @click="handleChangePage(n)">{{ n }}</a>-->
-<#--                            <a v-else class="item" @click="handleChangePage(n)">{{ n }}</a>-->
-<#--                        </template>-->
-<#--                    </template>-->
-
-<#--                    &lt;#&ndash;总页数大于10 显示当前页的前三页和后三页&ndash;&gt;-->
-<#--                    <template v-else>-->
-<#--                        <a v-if="page-3 >= 1"-->
-<#--                                class="item" @click="handleChangePage(page-3)">{{page-3}}</a>-->
-
-<#--                        <a v-if="page-2 >= 1"-->
-<#--                           class="item" @click="handleChangePage(page-2)">{{page-2}}</a>-->
-
-<#--                        <a v-if="page-1 >= 1"-->
-<#--                           class="item" @click="handleChangePage(page-1)">{{page-1}}</a>-->
-
-<#--                        <a class="item active" @click="handleChangePage(page)">{{page}}</a>-->
-
-<#--                        <a v-if="page+1 <= totalPage"-->
-<#--                           class="item" @click="handleChangePage(page+1)">{{page+1}}</a>-->
-
-<#--                        <a v-if="page+2 <= totalPage"-->
-<#--                           class="item" @click="handleChangePage(page+2)">{{page+2}}</a>-->
-
-<#--                        <a v-if="page+3 <= totalPage"-->
-<#--                           class="item" @click="handleChangePage(page+3)">{{page+3}}</a>-->
-<#--                    </template>-->
-
-<#--                    &lt;#&ndash;下一页&ndash;&gt;-->
-<#--                    <a v-if="page < totalPage" class="icon item" @click="handleChangePage(page+1)">-->
-<#--                        <i class="right chevron icon"></i>-->
-<#--                    </a>-->
-<#--                </div>-->
-<#--            </template>-->
-
-<#--        </template>-->
-
-<#--        <template v-else>-->
-<#--            <p>No articles have been published yet.</p>-->
-<#--        </template>-->
-<#--    </main>-->
 </@app>
 
 <#--footer-->
@@ -157,7 +134,7 @@
             el: '#app',
             data: {
                 page: 1,
-                limit: 10,
+                limit: 5,
                 articleList: [],
                 totalCount: 0,
                 totalPage: 0,
@@ -189,6 +166,9 @@
                     });
                 },
                 handleChangePage: function(page) {
+                    if(page < 1 || page > this.totalPage) {
+                        return;
+                    }
                     this.page = page;
                     this.handleListArticle();
                 },
