@@ -9,7 +9,7 @@
     <section class="hero">
         <div class="hero-body">
             <div id="article" class="container">
-                <div class="content is-medium">
+                <div class="content">
                     <h1>${article.title}</h1>
                     <p>${article.published?string("MMMM dd, yyyy")}</p>
                     ${article.htmlContent?no_esc}
