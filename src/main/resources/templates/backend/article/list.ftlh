@@ -16,11 +16,11 @@
 <@app>
 <section class="section">
     <div id="breadcrumb" class="container">
-        <nav class="breadcrumb" aria-label="breadcrumbs">
+        <nav class="breadcrumb">
             <ul>
-                <li><a>Home</a></li>
+                <li><a>Admin</a></li>
                 <li><a>Article</a></li>
-                <li class="is-active"><a aria-current="page">List</a></li>
+                <li class="is-active"><a>List</a></li>
             </ul>
         </nav>
     </div>
