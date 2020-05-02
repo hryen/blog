@@ -7,7 +7,7 @@
         <title>${title}</title>
         <link rel="preconnect" href="https://cdn.jsdelivr.net">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
-<#--        <link href="/css/backend.css" rel="stylesheet">-->
+        <link rel="stylesheet" href="/css/backend.css">
         <#nested>
     </head>
 </#macro>

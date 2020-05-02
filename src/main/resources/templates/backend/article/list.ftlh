@@ -1,29 +1,6 @@
 <#include "../common/layout.ftlh">
-
-<#--header-->
-<@header title="Articles - " + blogTitle>
-    <style>
-        #breadcrumb {
-            padding-bottom: 1rem;
-        }
-        #pagination {
-            padding-top: 1rem;
-        }
-    </style>
-</@header>
-
-<#--app-->
-<@app>
-<section class="section">
-    <div id="breadcrumb" class="container">
-        <nav class="breadcrumb">
-            <ul>
-                <li><a>Admin</a></li>
-                <li><a>Article</a></li>
-                <li class="is-active"><a>List</a></li>
-            </ul>
-        </nav>
-    </div>
+<@header title="Article list - " + blogTitle></@header>
+<@body>
     <div id="table" class="container">
         <table class="table is-fullwidth is-hoverable">
             <thead>
@@ -124,17 +101,15 @@
             </nav>
         </div>
     </template>
-</section>
-</@app>
-
-<#--footer-->
+</@body>
 <@footer>
     <script>
+        document.getElementById('article-list').className = 'is-active';
         new Vue({
             el: '#app',
             data: {
                 page: 1,
-                limit: 5,
+                limit: 20,
                 articleList: [],
                 totalCount: 0,
                 totalPage: 0,

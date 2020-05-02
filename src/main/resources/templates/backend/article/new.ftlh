@@ -1,36 +1,40 @@
 <#include "../common/layout.ftlh">
-
-<#--header-->
-<@header title="New article - " + blogTitle>
-</@header>
-
-<#--app-->
-<@app>
-    <main>
-        <form>
-            <div class="form-group">
-                <label for="Title">Title</label>
-                <input type="text" class="form-control" id="Title" autofocus
-                       v-model.trim="article.title">
+<@header title="New article - " + blogTitle></@header>
+<@body>
+    <div class="container message is-danger" :class="{ 'is-hidden': isHidden }" v-cloak>
+        <p class="message-body">{{ message }}</p>
+    </div>
+    <div id="hh" class="container">
+        <div class="field">
+            <div class="control">
+                <input class="input" type="text" placeholder="Title" :autofocus="autofocus"
+                       v-model.trim="article.title" :disabled="inputDisabled">
             </div>
-            <div class="form-group">
-                <label for="Permalink">Permalink</label>
-                <input type="text" class="form-control" id="Permalink"
-                       v-model.trim="article.permalink">
+        </div>
+        <div class="field">
+            <div class="control">
+                <input class="input" type="text" placeholder="Permalink"
+                       v-model.trim="article.permalink" :disabled="inputDisabled">
             </div>
-            <div class="form-group">
-                <label for="markdownContent">Markdown</label>
-                <textarea class="form-control" id="markdownContent" rows="20"
-                          v-model.trim="article.markdownContent"></textarea>
+        </div>
+        <div class="field">
+            <div class="control">
+                <textarea class="textarea" placeholder="Markdown..." rows="20"
+                          v-model.trim="article.markdownContent" :disabled="inputDisabled">
+                </textarea>
             </div>
-            <button type="button" class="btn btn-primary" @click="handleSaveArticle">Save</button>
-        </form>
-    </main>
-</@app>
-
-<#--footer-->
+        </div>
+        <div class="field">
+            <div class="control">
+                <button class="button is-info" :class="{ 'is-loading' : isLoad }"
+                        @click="handleSaveArticle">Save</button>
+            </div>
+        </div>
+    </div>
+</@body>
 <@footer>
     <script>
+        document.getElementById('article-new').className = 'is-active';
         new Vue({
             el: '#app',
             data: {
@@ -38,28 +42,42 @@
                     title: '',
                     permalink: '',
                     markdownContent: ''
-                }
+                },
+                autofocus: true,
+                isLoad: false,
+                inputDisabled: false,
+                isHidden: true,
+                message: ''
             },
             methods: {
                 handleSaveArticle: function () {
-
-                    if (this.article.title === "" || this.article.permalink === "") {
+                    let _this = this;
+                    if (_this.article.title === ""
+                        || _this.article.permalink === ""
+                        || _this.article.markdownContent === "") {
                         return;
                     }
-
+                    _this.inputDisabled = true;
+                    _this.isLoad = true;
                     axios.post('/admin/api/articles', {
-                        title: this.article.title,
-                        permalink: this.article.permalink,
-                        markdownContent: this.article.markdownContent
+                        title: _this.article.title,
+                        permalink: _this.article.permalink,
+                        markdownContent: _this.article.markdownContent
                     }).then(function(response) {
                         if(response.status === 200 && response.data.code === 0) {
                             alert('Successfully saved.');
                             window.location.href = '/admin/article/list';
                         } else {
-                            alert('Save failed!\nmsg: ' + response.data.msg);
+                            _this.message = 'Save failed: ' + response.data.msg;
+                            _this.isHidden = false;
+                            _this.inputDisabled = false;
+                            _this.isLoad = false;
                         }
                     }).catch(function(error) {
-                        alert('Save failed!\nmsg: ' + error);
+                        _this.message = 'Save failed: ' + error;
+                        _this.isHidden = false;
+                        _this.inputDisabled = false;
+                        _this.isLoad = false;
                     });
                 }
             }

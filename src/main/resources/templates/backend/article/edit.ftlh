@@ -1,34 +1,40 @@
 <#include "../common/layout.ftlh">
-
-<#--header-->
-<@header title="Edit article - " + blogTitle>
-</@header>
-
-<#--app-->
-<@app>
-    <main>
-        <div class="ui form">
-            <div class="field">
-                <label>Title</label>
-                <input type="text" v-model.trim="article.title">
+<@header title="Edit article - " + blogTitle></@header>
+<@body>
+    <div class="container message is-danger" :class="{ 'is-hidden': isHidden }" v-cloak>
+        <p class="message-body">{{ message }}</p>
+    </div>
+    <div id="hh" class="container">
+        <div class="field">
+            <div class="control">
+                <input class="input" type="text" placeholder="Title"
+                       v-model.trim="article.title" :disabled="inputDisabled">
             </div>
-
-            <div class="field">
-                <label>Permalink</label>
-                <input type="text" v-model.trim="article.permalink">
-            </div>
-
-            <div class="field">
-                <label>Markdown</label>
-                <textarea rows="30" v-model.trim="article.markdownContent" autofocus></textarea>
-            </div>
-
-            <button class="ui primary button" @click="handleSaveArticle">Save</button>
         </div>
-    </main>
-</@app>
-
-<#--footer-->
+        <div class="field">
+            <div class="control">
+                <input class="input" type="text" placeholder="Permalink"
+                       v-model.trim="article.permalink" :disabled="inputDisabled">
+            </div>
+        </div>
+        <div class="field">
+            <div class="control">
+                <textarea class="textarea" placeholder="Markdown..." rows="20"
+                          v-model.trim="article.markdownContent"
+                          :disabled="inputDisabled"
+                          :autofocus="autofocus">
+                </textarea>
+            </div>
+        </div>
+        <div class="field">
+            <div class="control">
+                <button class="button is-info" :class="{ 'is-loading' : isLoad }"
+                        :disabled="inputDisabled"
+                        @click="handleSaveArticle">Save</button>
+            </div>
+        </div>
+    </div>
+</@body>
 <@footer>
     <script>
         new Vue({
@@ -38,37 +44,63 @@
                     title: '',
                     permalink: '',
                     markdownContent: ''
-                }
+                },
+                autofocus: true,
+                isLoad: false,
+                inputDisabled: false,
+                isHidden: true,
+                message: ''
             },
             mounted: function () {
-                axios.get('/admin/api/articles/${id}').then((response) => {
-                    const data = response.data.data;
-                    this.article.title = data.title;
-                    this.article.permalink = data.permalink;
-                    this.article.markdownContent = data.markdownContent;
-                });
+                let _this = this;
+                axios.get('/admin/api/articles/${id}')
+                    .then(function(response) {
+                        if(response.status === 200 && response.data.code === 0) {
+                            const data = response.data.data;
+                            _this.article.title = data.title;
+                            _this.article.permalink = data.permalink;
+                            _this.article.markdownContent = data.markdownContent;
+                        } else {
+                            _this.message = 'Load article failed: ' + response.data.msg;
+                            _this.isHidden = false;
+                            _this.inputDisabled = true;
+                        }
+                    }).catch(function(error) {
+                        _this.message = 'Load article failed: ' + error;
+                        _this.isHidden = false;
+                        _this.inputDisabled = true;
+                    });
             },
             methods: {
                 handleSaveArticle: function() {
-
-                    if (this.article.title === "" || this.article.permalink === "") {
+                    let _this = this;
+                    if (_this.article.title === ""
+                        || _this.article.permalink === ""
+                        || _this.article.markdownContent === "") {
                         return;
                     }
-
+                    _this.inputDisabled = true;
+                    _this.isLoad = true;
                     axios.put('/admin/api/articles/${id}', {
-                        title: this.article.title,
-                        permalink: this.article.permalink,
-                        markdownContent: this.article.markdownContent
-                    }).then((response) => {
+                        title: _this.article.title,
+                        permalink: _this.article.permalink,
+                        markdownContent: _this.article.markdownContent
+                    }).then(function(response) {
                         if(response.status === 200 && response.data.code === 0) {
-                        alert('Successfully updated.');
-                        window.location.href = '/admin/article/list';
-                    } else {
-                        alert('Updated failed!\nmsg: ' + response.data.msg);
-                    }
-                }).catch((error) => {
-                        alert('Updated failed!\nmsg: ' + response.data.msg);
-                });
+                            alert('Successfully updated.');
+                            window.location.href = '/admin/article/list';
+                        } else {
+                            _this.message = 'Save failed: ' + response.data.msg;
+                            _this.isHidden = false;
+                            _this.inputDisabled = false;
+                            _this.isLoad = false;
+                        }
+                    }).catch(function(error) {
+                        _this.message = 'Save failed: ' + error;
+                        _this.isHidden = false;
+                        _this.inputDisabled = false;
+                        _this.isLoad = false;
+                    });
                 }
             }
         });

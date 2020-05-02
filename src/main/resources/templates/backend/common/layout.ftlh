@@ -1,13 +1,11 @@
 <#include "header.ftlh">
-
-<#macro app>
+<#macro body>
     <body>
-        <div id="app">
-<#--            <#include "left-sider.ftlh">-->
+        <section id="app" class="section">
+            <#include "breadcrumb.ftlh">
             <#nested>
-        </div>
+        </section>
         </#macro>
-
         <#macro footer>
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
