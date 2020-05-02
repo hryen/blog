@@ -53,6 +53,8 @@
             },
             mounted: function () {
                 let _this = this;
+                _this.inputDisabled = true;
+                _this.isLoad = true;
                 axios.get('/admin/api/articles/${id}')
                     .then(function(response) {
                         if(response.status === 200 && response.data.code === 0) {
@@ -60,15 +62,17 @@
                             _this.article.title = data.title;
                             _this.article.permalink = data.permalink;
                             _this.article.markdownContent = data.markdownContent;
+                            _this.inputDisabled = false;
+                            _this.isLoad = false;
                         } else {
                             _this.message = 'Load article failed: ' + response.data.msg;
                             _this.isHidden = false;
-                            _this.inputDisabled = true;
+                            _this.isLoad = false;
                         }
                     }).catch(function(error) {
                         _this.message = 'Load article failed: ' + error;
                         _this.isHidden = false;
-                        _this.inputDisabled = true;
+                        _this.isLoad = false;
                     });
             },
             methods: {
