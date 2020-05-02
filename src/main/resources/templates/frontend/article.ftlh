@@ -21,6 +21,6 @@
 
 <#--script-->
 <@script>
-    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
 </@script>
