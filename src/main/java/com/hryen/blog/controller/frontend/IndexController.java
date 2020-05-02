@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class IndexController {
 
     private final ArticleService articleService;
-
     public IndexController(ArticleService articleService) {
         this.articleService = articleService;
     }
