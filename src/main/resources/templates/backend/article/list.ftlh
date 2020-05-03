@@ -1,6 +1,6 @@
 <#include "../common/layout.ftlh">
 <@header title="Article list - " + blogTitle></@header>
-<@body>
+<@body breadcrumb=true>
     <div id="table" class="container">
         <table class="table is-fullwidth is-hoverable">
             <thead>

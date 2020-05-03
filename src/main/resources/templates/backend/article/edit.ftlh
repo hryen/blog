@@ -1,6 +1,6 @@
 <#include "../common/layout.ftlh">
 <@header title="Edit article - " + blogTitle></@header>
-<@body>
+<@body breadcrumb=true>
     <div class="container message is-danger" :class="{ 'is-hidden': isHidden }">
         <p class="message-body">{{ message }}</p>
     </div>
