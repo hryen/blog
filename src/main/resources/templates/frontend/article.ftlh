@@ -2,6 +2,12 @@
 
 <#--header-->
 <@header title="${article.title} - ${blogTitle}">
+    <style>
+        #article {
+            max-width: 960px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/styles/tomorrow.min.css">
 </@header>
 
 <#--body-->

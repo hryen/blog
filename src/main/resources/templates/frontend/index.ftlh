@@ -4,7 +4,6 @@
 <@header title="${blogTitle}">
     <link rel="preconnect" href="//cdn.jsdelivr.net">
     <link href="//cdn.jsdelivr.net/npm/@primer/css@13.2.0/dist/primer.css" rel="stylesheet" />
-    <link href="/css/hryen.css" rel="stylesheet" />
 </@header>
 
 <#--body-->
