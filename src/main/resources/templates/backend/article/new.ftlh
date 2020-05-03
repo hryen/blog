@@ -4,11 +4,12 @@
     <div class="container message is-danger" :class="{ 'is-hidden': isHidden }">
         <p class="message-body">{{ message }}</p>
     </div>
-    <div id="hh" class="container">
+    <div class="container">
         <div class="field">
             <div class="control">
-                <input class="input" type="text" placeholder="Title" :autofocus="autofocus"
-                       v-model.trim="article.title" :disabled="inputDisabled">
+                <input class="input" type="text" placeholder="Title"
+                       v-model.trim="article.title"
+                       :autofocus="autofocus" :disabled="inputDisabled">
             </div>
         </div>
         <div class="field">
