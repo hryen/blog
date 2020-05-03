@@ -1,8 +1,10 @@
 <#include "header.ftlh">
-<#macro body>
+<#macro body breadcrumb>
     <body>
         <section id="app" class="section" v-cloak>
-            <#include "breadcrumb.ftlh">
+            <#if breadcrumb>
+                <#include "breadcrumb.ftlh">
+            </#if>
             <#nested>
         </section>
         </#macro>

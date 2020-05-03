@@ -2,6 +2,10 @@
     display: none
 }
 
+#login {
+    max-width: 380px;
+}
+
 #breadcrumb {
     margin-bottom: 1.5rem;
 }
