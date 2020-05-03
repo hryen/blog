@@ -22,7 +22,7 @@
             </div>
             <div class="field">
                 <div class="control">
-                    <button class="button is-primary"
+                    <button class="button is-info"
                             :class="{ 'is-loading' : isLoad }">Log in</button>
                 </div>
             </div>
