@@ -95,7 +95,7 @@
                         markdownContent: _this.article.markdownContent
                     }).then(function(response) {
                         if(response.status === 200 && response.data.code === 0) {
-                            alert('Successfully updated.');
+                            alert('Saved successfully');
                             window.location.href = '/admin/article/list';
                         } else {
                             _this.message = 'Save failed: ' + response.data.msg;
