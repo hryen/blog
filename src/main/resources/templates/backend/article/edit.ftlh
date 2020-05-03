@@ -1,7 +1,7 @@
 <#include "../common/layout.ftlh">
 <@header title="Edit article - " + blogTitle></@header>
 <@body>
-    <div class="container message is-danger" :class="{ 'is-hidden': isHidden }" v-cloak>
+    <div class="container message is-danger" :class="{ 'is-hidden': isHidden }">
         <p class="message-body">{{ message }}</p>
     </div>
     <div id="hh" class="container">
@@ -21,8 +21,7 @@
             <div class="control">
                 <textarea class="textarea" placeholder="Markdown..." rows="20"
                           v-model.trim="article.markdownContent"
-                          :disabled="inputDisabled"
-                          :autofocus="autofocus">
+                          :disabled="inputDisabled" ref="markdownTextarea">
                 </textarea>
             </div>
         </div>
@@ -45,7 +44,6 @@
                     permalink: '',
                     markdownContent: ''
                 },
-                autofocus: true,
                 isLoad: false,
                 inputDisabled: false,
                 isHidden: true,
@@ -74,6 +72,9 @@
                         _this.isHidden = false;
                         _this.isLoad = false;
                     });
+                setTimeout(() => {
+                    _this.$refs.markdownTextarea.focus();
+                }, 100);
             },
             methods: {
                 handleSaveArticle: function() {

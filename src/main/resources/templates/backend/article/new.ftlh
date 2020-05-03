@@ -1,7 +1,7 @@
 <#include "../common/layout.ftlh">
 <@header title="New article - " + blogTitle></@header>
 <@body>
-    <div class="container message is-danger" :class="{ 'is-hidden': isHidden }" v-cloak>
+    <div class="container message is-danger" :class="{ 'is-hidden': isHidden }">
         <p class="message-body">{{ message }}</p>
     </div>
     <div id="hh" class="container">

@@ -1,7 +1,7 @@
 <#include "header.ftlh">
 <#macro body>
     <body>
-        <section id="app" class="section">
+        <section id="app" class="section" v-cloak>
             <#include "breadcrumb.ftlh">
             <#nested>
         </section>
