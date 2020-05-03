@@ -50,33 +50,36 @@
                 message: ''
             },
             mounted: function () {
-                let _this = this;
-                _this.inputDisabled = true;
-                _this.isLoad = true;
-                axios.get('/admin/api/articles/${id}')
-                    .then(function(response) {
-                        if(response.status === 200 && response.data.code === 0) {
-                            const data = response.data.data;
-                            _this.article.title = data.title;
-                            _this.article.permalink = data.permalink;
-                            _this.article.markdownContent = data.markdownContent;
-                            _this.inputDisabled = false;
-                            _this.isLoad = false;
-                        } else {
-                            _this.message = 'Load article failed: ' + response.data.msg;
-                            _this.isHidden = false;
-                            _this.isLoad = false;
-                        }
-                    }).catch(function(error) {
+                this.handleGetArticle();
+            },
+            methods: {
+                handleGetArticle: function() {
+                    let _this = this;
+                    _this.inputDisabled = true;
+                    _this.isLoad = true;
+                    axios.get('/admin/api/articles/${id}')
+                        .then(function(response) {
+                            if(response.status === 200 && response.data.code === 0) {
+                                const data = response.data.data;
+                                _this.article.title = data.title;
+                                _this.article.permalink = data.permalink;
+                                _this.article.markdownContent = data.markdownContent;
+                                _this.inputDisabled = false;
+                                _this.isLoad = false;
+                                setTimeout(function() {
+                                    _this.$refs.markdownTextarea.focus();
+                                    }, 100);
+                            } else {
+                                _this.message = 'Load article failed: ' + response.data.msg;
+                                _this.isHidden = false;
+                                _this.isLoad = false;
+                            }
+                        }).catch(function(error) {
                         _this.message = 'Load article failed: ' + error;
                         _this.isHidden = false;
                         _this.isLoad = false;
                     });
-                setTimeout(() => {
-                    _this.$refs.markdownTextarea.focus();
-                }, 100);
-            },
-            methods: {
+                },
                 handleSaveArticle: function() {
                     let _this = this;
                     if (_this.article.title === ""
