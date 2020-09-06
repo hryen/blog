@@ -39,6 +39,9 @@ public final class UserService {
         throw new UserLoginException("Incorrect username or password");
     }
 
+    /**
+     * 下面两个方法还没用到过
+     */
     public User updatePassword(String id, UserUpdatePasswordRequestDTO dto) {
         Optional<User> optionalUser = userRepository.findById(id);
         if(optionalUser.isPresent()) {

@@ -17,7 +17,7 @@
             <div id="article" class="container">
                 <div class="content">
                     <h1>${article.title}</h1>
-                    <p>${article.published?string("MMMM dd, yyyy")}</p>
+                    <p><small>${article.published?string("MMMM dd, yyyy")}</small></p>
                     ${article.htmlContent?no_esc}
                 </div>
             </div>
