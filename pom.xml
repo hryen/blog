@@ -18,7 +18,7 @@
     <properties>
         <java.version>11</java.version>
         <flexmark.version>0.60.2</flexmark.version>
-        <guava.version>29.0-jre</guava.version>
+        <guava.version>30.1.1-jre</guava.version>
     </properties>
 
     <dependencies>
